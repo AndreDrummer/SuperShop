@@ -1,7 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:supers/core/constantes/sizes.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supers/core/style/text_styles.dart';
+import 'package:supers/core/utils/currency_formatter.dart';
 import '../../../core/bloc/cart_bloc.dart';
 import '../../../core/bloc/products_bloc.dart';
 import '../../../core/constantes/strings.dart';
@@ -72,7 +75,32 @@ class _ShopScreenState extends State<ShopScreen> {
           ],
         ),
         drawer: AppDrawer(),
-        body: ProductGrid(),
+        body: Consumer<CartBloc>(
+          builder: (_, cart, child) => Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: cart.cartList.isNotEmpty ? 48.0.h : 0.0,
+                ),
+                child: ProductGrid(),
+              ),
+              if (cart.cartList.isNotEmpty)
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    padding: EdgeInsets.all(8.0.h),
+                    color: Colors.red,
+                    height: 50,
+                    width: Sizes.deviceWidth(context),
+                    child: AutoSizeText(
+                      'Checkout: ${formatCurrency.format(cart.checkoutValue)}',
+                      style: TextStyles.fontSize26(),
+                    ),
+                  ),
+                )
+            ],
+          ),
+        ),
       ),
     );
   }

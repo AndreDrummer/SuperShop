@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
+import 'package:supers/core/utils/currency_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:supers/core/bloc/cart_bloc.dart';
 import 'package:supers/core/constantes/strings.dart';
@@ -16,7 +16,6 @@ class ProductGridItem extends StatelessWidget {
     required this.product,
   });
   final Product product;
-  final formatCurrency = new NumberFormat.simpleCurrency(locale: 'pt_BR');
 
   @override
   Widget build(BuildContext context) {
