@@ -66,7 +66,7 @@ class _ShopScreenState extends State<ShopScreen> {
                 },
               ),
               builder: (_, cart, child) => Badge(
-                value: '0',
+                value: '${cart.cartList.length}',
                 child: child!,
               ),
             )

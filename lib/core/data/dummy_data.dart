@@ -63,3 +63,5 @@ final productsGame = [
     "image": "horizon-zero-dawn.png"
   }
 ];
+
+final cart = [];

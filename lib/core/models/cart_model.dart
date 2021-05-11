@@ -4,17 +4,26 @@ import 'package:supers/core/models/product_model.dart';
 part 'cart_model.g.dart';
 
 @JsonSerializable()
-class Cart {
-  Cart({
+class CartItem {
+  CartItem({
     required this.product,
     required this.quantity,
-    required this.price,
   });
 
   final Product product;
   final int quantity;
-  final double price;
 
-  factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
-  Map<String, dynamic> toJson() => _$CartToJson(this);
+  CartItem copyWith({
+    Product? newProduct,
+    int? newQuantity,
+  }) {
+    return CartItem(
+      quantity: newQuantity ?? quantity,
+      product: newProduct ?? product,
+    );
+  }
+
+  factory CartItem.fromJson(Map<String, dynamic> json) =>
+      _$CartItemFromJson(json);
+  Map<String, dynamic> toJson() => _$CartItemToJson(this);
 }

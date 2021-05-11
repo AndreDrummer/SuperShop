@@ -2,6 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:supers/core/bloc/cart_bloc.dart';
 
 import '../../../core/constantes/sizes.dart';
 import '../../../core/models/product_model.dart';
@@ -73,22 +75,27 @@ class ProductGridItem extends StatelessWidget {
                     '${formatCurrency.format(product.price)}',
                     style: TextStyles.fontSize18(),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.shopping_cart),
-                    color: Theme.of(context).accentColor,
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          duration: Duration(seconds: 2),
-                          content: AutoSizeText('Item adicionado com sucesso!'),
-                          action: SnackBarAction(
-                            label: 'DESFAZER',
-                            onPressed: () {},
-                          ),
-                        ),
+                  Consumer<CartBloc>(
+                    builder: (_, cart, child) {
+                      return IconButton(
+                        icon: Icon(Icons.shopping_cart),
+                        color: Theme.of(context).accentColor,
+                        onPressed: () {
+                          cart.addItem(product);
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              duration: Duration(seconds: 2),
+                              content:
+                                  AutoSizeText('Item adicionado com sucesso!'),
+                              action: SnackBarAction(
+                                label: 'DESFAZER',
+                                onPressed: () {},
+                              ),
+                            ),
+                          );
+                        },
                       );
-                      // cart.addItem(product);
                     },
                   ),
                 ],
@@ -96,28 +103,6 @@ class ProductGridItem extends StatelessWidget {
             ],
           ),
         ),
-        // GridTileBar(
-        //   backgroundColor: Colors.black87,
-        //   title: AutoSizeText(product.name),
-        //   trailing: IconButton(
-        //     icon: Icon(Icons.shopping_cart),
-        //     color: Theme.of(context).accentColor,
-        //     onPressed: () {
-        //       ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        //       ScaffoldMessenger.of(context).showSnackBar(
-        //         SnackBar(
-        //           duration: Duration(seconds: 2),
-        //           content: AutoSizeText('Item adicionado com sucesso!'),
-        //           action: SnackBarAction(
-        //             label: 'DESFAZER',
-        //             onPressed: () {},
-        //           ),
-        //         ),
-        //       );
-        //       // cart.addItem(product);
-        //     },
-        //   ),
-        // ),
       ),
     );
   }
