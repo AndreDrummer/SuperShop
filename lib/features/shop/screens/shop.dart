@@ -35,7 +35,6 @@ class _ShopScreenState extends State<ShopScreen> {
             PopupMenuButton<OrderCriteria>(
               icon: Icon(Icons.settings_input_composite_rounded),
               onSelected: (value) {
-                print('$value');
                 productsBloc.orderBy(value);
               },
               itemBuilder: (context) {
@@ -77,6 +76,4 @@ class _ShopScreenState extends State<ShopScreen> {
       ),
     );
   }
-
-  void showSettingsPopUp() {}
 }

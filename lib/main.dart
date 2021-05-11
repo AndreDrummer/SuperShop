@@ -36,5 +36,3 @@ class _SuperShopState extends State<SuperShop> {
     );
   }
 }
-
-class ProductFormScreen {}

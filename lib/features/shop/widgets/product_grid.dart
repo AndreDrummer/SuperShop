@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supers/core/bloc/products_bloc.dart';
+import 'package:supers/core/constantes/strings.dart';
 import 'package:supers/core/models/product_model.dart';
 import '../widgets/product_grid_item.dart';
 
@@ -27,7 +28,7 @@ class ProductGrid extends StatelessWidget {
           );
         }
         return Center(
-          child: AutoSizeText('Nada'),
+          child: AutoSizeText(SuperShopStrings.noGameFound),
         );
       },
     );

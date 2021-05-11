@@ -51,6 +51,20 @@ class CartBloc extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeItem(Product product) {
+    List<CartItem> currentCart = cartList;
+    if (elementUserExistsOnList(product)) {
+      var productIndex = currentCart.indexOf(
+        currentCart
+            .where((cartItem) => cartItem.product.id == product.id)
+            .first,
+      );
+      currentCart.removeAt(productIndex);
+      changeCart(currentCart);
+    }
+    notifyListeners();
+  }
+
   bool elementUserExistsOnList(Product product) {
     var result = false;
     cartList.forEach((element) {

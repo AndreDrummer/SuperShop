@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:supers/core/bloc/cart_bloc.dart';
+import 'package:supers/core/constantes/strings.dart';
 
 import '../../../core/constantes/sizes.dart';
 import '../../../core/models/product_model.dart';
@@ -78,21 +79,20 @@ class ProductGridItem extends StatelessWidget {
                   Consumer<CartBloc>(
                     builder: (_, cart, child) {
                       return IconButton(
-                        icon: Icon(Icons.shopping_cart),
+                        icon: _wichShoppingCartIcon(context, product),
                         color: Theme.of(context).accentColor,
                         onPressed: () {
                           cart.addItem(product);
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              duration: Duration(seconds: 2),
-                              content:
-                                  AutoSizeText('Item adicionado com sucesso!'),
-                              action: SnackBarAction(
-                                label: 'DESFAZER',
-                                onPressed: () {},
-                              ),
-                            ),
+                          showSnackBar(
+                            context,
+                            SuperShopStrings.itemAddedToTheCart,
+                            undo: () {
+                              cart.removeItem(product);
+                              showSnackBar(
+                                context,
+                                SuperShopStrings.itemRemovedFromTheCart,
+                              );
+                            },
                           );
                         },
                       );
@@ -103,6 +103,30 @@ class ProductGridItem extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Icon _wichShoppingCartIcon(BuildContext context, Product product) {
+    if (Provider.of<CartBloc>(context).elementUserExistsOnList(product))
+      return Icon(Icons.shopping_cart);
+    return Icon(Icons.shopping_cart_outlined);
+  }
+
+  void showSnackBar(BuildContext context, String message, {Function? undo}) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: 2),
+        content: AutoSizeText(message),
+        action: undo != null
+            ? SnackBarAction(
+                label: SuperShopStrings.undo,
+                onPressed: () {
+                  undo.call();
+                },
+              )
+            : null,
       ),
     );
   }
