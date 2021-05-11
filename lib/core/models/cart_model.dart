@@ -1,19 +1,20 @@
-library cart;
-
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:supers/core/models/product_model.dart';
 
 part 'cart_model.g.dart';
 
-abstract class Cart implements Built<Cart, CartBuilder> {
-  static Serializer<Cart> get serializer => _$cartSerializer;
+@JsonSerializable()
+class Cart {
+  Cart({
+    required this.product,
+    required this.quantity,
+    required this.price,
+  });
 
-  Product get product;
-  int get quantity;
-  double get price;
+  final Product product;
+  final int quantity;
+  final double price;
 
-  Cart._();
-
-  factory Cart([Function(CartBuilder b) updates]) = _$Cart;
+  factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
+  Map<String, dynamic> toJson() => _$CartToJson(this);
 }

@@ -1,61 +1,100 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../data/dummy_data.dart';
 import '../models/product_model.dart';
-import '../serializer/serializers.dart';
+import '../utils/extensions.dart';
+
+enum OrderCriteria {
+  alphabetic,
+  score,
+  price,
+}
 
 class ProductsBloc extends ChangeNotifier {
-  final products =
-      BehaviorSubject<BuiltList<Product>>.seeded(BuiltList<Product>());
+  final products = BehaviorSubject<List<Product>>.seeded(<Product>[]);
 
-  void Function(BuiltList<Product>) get changeProduct => products.sink.add;
-  Stream<BuiltList<Product>> get productsStream => products.stream;
-  BuiltList<Product> get productList => products.value;
+  void Function(List<Product>) get changeProduct => products.sink.add;
+  Stream<List<Product>> get productsStream => products.stream;
+  List<Product> get productList => products.value;
 
   void loadProducts() {
-    changeProduct(BuiltList<Product>());
-    final BuiltList<Product> products = BuiltList<Product>(
-      productsGame.map(
-        (product) => serializers.deserializeWith(
-          Product.serializer,
-          product,
-        ),
-      ),
-    );
+    changeProduct(<Product>[]);
+    final List<Product> products = productsGame
+        .map(
+          (product) => Product.fromJson(
+            product,
+          ),
+        )
+        .toList();
 
     changeProduct(products);
-    // notifyListeners();
   }
 
-  // addItem(Product product) {
-  //   if (_items.containsKey(product.id)) {
-  //     _items.update(
-  //       product.id,
-  //       (existingItem) => CartItem(
-  //           id: existingItem.id,
-  //           productId: product.id,
-  //           price: existingItem.price,
-  //           quantity: existingItem.quantity + 1,
-  //           title: existingItem.title),
-  //     );
-  //   } else {
-  //     _items.putIfAbsent(
-  //       product.id,
-  //       () => CartItem(
-  //         productId: product.id,
-  //         id: Random().nextDouble().toString(),
-  //         price: product.price,
-  //         quantity: 1,
-  //         title: product.title,
-  //       ),
-  //     );
-  //   }
+  void orderBy(OrderCriteria orderCriteria) {
+    switch (orderCriteria) {
+      case OrderCriteria.alphabetic:
+        orderByAlphabetic();
+        break;
+      case OrderCriteria.score:
+        orderByScore();
+        break;
+      case OrderCriteria.price:
+        orderByPrice();
+        break;
+    }
+  }
 
-  //   notifyListeners();
-  // }
+  void orderByPrice() {
+    List<Product> newList = productList;
+
+    newList.sort((Product a, Product b) => (a.price.toInt() - b.price.toInt()));
+
+    changeProduct(newList);
+    notifyListeners();
+  }
+
+  void orderByScore() {
+    List<Product> newList = productList;
+    newList.sort((Product a, Product b) => a.score - b.score);
+    changeProduct(newList);
+    notifyListeners();
+  }
+
+  void orderByAlphabetic() {
+    List<Product> newList = productList;
+    newList.sort(orderByName);
+    changeProduct(newList);
+    notifyListeners();
+  }
+
+  static int orderByName(Product a, Product b) {
+    List<int> aname = a.name.trim().removeAccent().codeUnits;
+    List<int> bname = b.name.trim().removeAccent().codeUnits;
+
+    if (a.name.isEmpty) {
+      aname = 'u'.codeUnits;
+    }
+    if (b.name.isEmpty) {
+      bname = 'u'.codeUnits;
+    }
+
+    int i = 0;
+    while (i < bname.length) {
+      if (bname[i] < aname[i]) {
+        return 1;
+      } else if (bname[i] == aname[i]) {
+        i++;
+        if (i >= aname.length) {
+          return 1;
+        }
+      } else {
+        return -1;
+      }
+    }
+    return 1;
+  }
 
   @override
   void dispose() {

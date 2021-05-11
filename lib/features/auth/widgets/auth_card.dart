@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 enum AuthMode { Signup, Login }
@@ -51,11 +52,11 @@ class _AuthCardState extends State<AuthCard>
   //   showDialog(
   //     context: context,
   //     builder: (ctx) => AlertDialog(
-  //       title: Text('Ocorreu um erro!'),
-  //       content: Text(msg),
+  //       title: AutoSizeText('Ocorreu um erro!'),
+  //       content: AutoSizeText(msg),
   //       actions: <Widget>[
   //         TextButton(
-  //           child: Text('Fechar'),
+  //           child: AutoSizeText('Fechar'),
   //           onPressed: () {
   //             Navigator.pop(context);
   //           },
@@ -197,7 +198,7 @@ class _AuthCardState extends State<AuthCard>
                         ),
                         onPressed: () {},
                         // onPressed: _submit,
-                        child: Text(
+                        child: AutoSizeText(
                           _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR',
                           style: TextStyle(
                             color: Theme.of(context)
@@ -209,7 +210,7 @@ class _AuthCardState extends State<AuthCard>
                       ),
               ),
               TextButton(
-                child: Text(
+                child: AutoSizeText(
                     '${_authMode == AuthMode.Login ? 'ALTERNAR P/ REGISTRAR' : 'ALTERNAR P/ LOGIN'}'),
                 onPressed: _switchAuthMode,
                 style: TextButton.styleFrom(

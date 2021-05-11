@@ -1,19 +1,24 @@
-library products;
+import 'package:json_annotation/json_annotation.dart';
 
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
 part 'product_model.g.dart';
 
-abstract class Product implements Built<Product, ProductBuilder> {
-  static Serializer<Product> get serializer => _$productSerializer;
+@JsonSerializable()
+class Product {
+  Product({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.score,
+    required this.image,
+  });
 
-  int get id;
-  String get name;
-  double get price;
-  int get score;
-  String get image;
+  final int id;
+  final String name;
+  final double price;
+  final int score;
+  final String image;
 
-  Product._();
-
-  factory Product([Function(ProductBuilder b) updates]) = _$Product;
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
 }

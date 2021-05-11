@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,10 +19,10 @@ class _ShopScreenState extends State<ShopScreen> {
   late ProductsBloc productsBloc;
 
   @override
-  void didChangeDependencies() {
-    productsBloc = Provider.of<ProductsBloc>(context);
+  void initState() {
+    productsBloc = Provider.of<ProductsBloc>(context, listen: false);
     productsBloc.loadProducts();
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override
@@ -29,8 +30,31 @@ class _ShopScreenState extends State<ShopScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(SuperShopStrings.appTitle),
+          title: AutoSizeText(SuperShopStrings.appTitle),
           actions: [
+            PopupMenuButton<OrderCriteria>(
+              icon: Icon(Icons.settings_input_composite_rounded),
+              onSelected: (value) {
+                print('$value');
+                productsBloc.orderBy(value);
+              },
+              itemBuilder: (context) {
+                return <PopupMenuEntry<OrderCriteria>>[
+                  PopupMenuItem(
+                    child: Text(SuperShopStrings.orderByPrice),
+                    value: OrderCriteria.price,
+                  ),
+                  PopupMenuItem(
+                    child: Text(SuperShopStrings.orderByName),
+                    value: OrderCriteria.alphabetic,
+                  ),
+                  PopupMenuItem(
+                    child: Text(SuperShopStrings.orderByScore),
+                    value: OrderCriteria.score,
+                  ),
+                ];
+              },
+            ),
             Consumer<CartBloc>(
               child: IconButton(
                 icon: Icon(Icons.shopping_cart),
@@ -53,4 +77,6 @@ class _ShopScreenState extends State<ShopScreen> {
       ),
     );
   }
+
+  void showSettingsPopUp() {}
 }

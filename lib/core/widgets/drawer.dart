@@ -1,6 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:supers/core/constantes/strings.dart';
 
+import '../constantes/strings.dart';
 import '../utils/app_routes.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -10,13 +11,13 @@ class AppDrawer extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text('${SuperShopStrings.welcome} usuário!'),
+          title: AutoSizeText('${SuperShopStrings.welcome} usuário!'),
         ),
         body: Column(
           children: <Widget>[
             ListTile(
               leading: Icon(Icons.shop),
-              title: Text(SuperShopStrings.shop),
+              title: AutoSizeText(SuperShopStrings.shop),
               onTap: () {
                 Navigator.pushReplacementNamed(
                   context,
@@ -27,7 +28,7 @@ class AppDrawer extends StatelessWidget {
             Divider(),
             ListTile(
               leading: Icon(Icons.credit_card),
-              title: Text(SuperShopStrings.myOrders),
+              title: AutoSizeText(SuperShopStrings.myOrders),
               onTap: () {
                 Navigator.pushNamed(
                   context,
@@ -38,7 +39,7 @@ class AppDrawer extends StatelessWidget {
             Divider(),
             ListTile(
               leading: Icon(Icons.shopping_cart),
-              title: Text(SuperShopStrings.cart),
+              title: AutoSizeText(SuperShopStrings.cart),
               onTap: () {
                 Navigator.pushNamed(
                   context,
@@ -49,7 +50,7 @@ class AppDrawer extends StatelessWidget {
             Divider(),
             ListTile(
               leading: Icon(Icons.exit_to_app),
-              title: Text(SuperShopStrings.leaveApp),
+              title: AutoSizeText(SuperShopStrings.leaveApp),
               onTap: () {},
             ),
             Divider()

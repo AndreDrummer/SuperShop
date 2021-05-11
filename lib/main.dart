@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,14 +20,18 @@ class _SuperShopState extends State<SuperShop> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: providers,
-      child: MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      child: ScreenUtilInit(
+        designSize: Size(360, 690),
+        builder: () => MaterialApp(
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            accentColor: Colors.orange,
+          ),
+          debugShowCheckedModeBanner: false,
+          routes: {
+            AppRoutes.SHOP: (ctx) => ShopScreen(),
+          },
         ),
-        debugShowCheckedModeBanner: false,
-        routes: {
-          AppRoutes.SHOP: (ctx) => ShopScreen(),
-        },
       ),
     );
   }

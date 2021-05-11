@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class Badge extends StatelessWidget {
@@ -24,7 +25,7 @@ class Badge extends StatelessWidget {
               color: color != null ? color : Theme.of(context).accentColor,
             ),
             constraints: BoxConstraints(maxHeight: 16, maxWidth: 16),
-            child: Text(
+            child: AutoSizeText(
               value,
               textAlign: TextAlign.center,
               style: TextStyle(
