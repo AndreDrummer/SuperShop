@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supers/core/bloc/cart_bloc.dart';
@@ -23,17 +24,17 @@ class CartItemWidegt extends StatelessWidget {
         return showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text(SuperShopStrings.sure),
-            content: Text(SuperShopStrings.wannaRemoveItem),
+            title: AutoSizeText(SuperShopStrings.sure),
+            content: AutoSizeText(SuperShopStrings.wannaRemoveItem),
             actions: <Widget>[
               TextButton(
-                child: Text(SuperShopStrings.no),
+                child: AutoSizeText(SuperShopStrings.no),
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
               ),
               TextButton(
-                child: Text(SuperShopStrings.yes),
+                child: AutoSizeText(SuperShopStrings.yes),
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
@@ -72,10 +73,10 @@ class CartItemWidegt extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            title: Text('${cartItem.product.name}'),
-            subtitle: Text(
+            title: AutoSizeText('${cartItem.product.name}'),
+            subtitle: AutoSizeText(
                 '${SuperShopStrings.cartTotalPrice}: ${(cartItem.product.price * cartItem.quantity).toStringAsFixed(2)}'),
-            trailing: Text('${cartItem.quantity}x'),
+            trailing: AutoSizeText('${cartItem.quantity}x'),
           ),
         ),
       ),

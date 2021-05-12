@@ -7,13 +7,15 @@ part 'order_model.g.dart';
 @JsonSerializable()
 class Order {
   Order({
-    required this.id,
+    required this.shippingValue,
     required this.total,
     required this.items,
     required this.date,
+    required this.id,
   });
 
   final List<CartItem> items;
+  final double shippingValue;
   final DateTime date;
   final double total;
   final int id;

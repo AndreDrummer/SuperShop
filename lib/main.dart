@@ -28,8 +28,8 @@ class _SuperShopState extends State<SuperShop> {
         builder: () => OverlaySupport(
           child: MaterialApp(
             theme: ThemeData(
-              primarySwatch: Colors.blue,
-              accentColor: Colors.orange,
+              primaryColor: Color(0xFF1E212B),
+              accentColor: Color(0XFF4D8B31),
             ),
             debugShowCheckedModeBanner: false,
             routes: {

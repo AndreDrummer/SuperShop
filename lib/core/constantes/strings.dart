@@ -15,6 +15,7 @@ class SuperShopStrings {
   static final String cartTotalPrice = 'Total';
   static final String seeCart = 'Ver Carrinho';
   static final String welcome = 'Bem vindo ';
+  static final String shoppingValue = 'Frete';
   static final String sure = 'Tem certeza?';
   static final String leaveApp = 'Sair';
   static final String cart = 'Carrinho';

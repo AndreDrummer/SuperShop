@@ -1,8 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:supers/core/models/order_model.dart';
 import 'package:supers/core/utils/currency_formatter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supers/core/widgets/shopping_value.dart';
 
 class OrderItemWidget extends StatefulWidget {
   final Order order;
@@ -26,8 +28,9 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text('${formatCurrency.format(widget.order.total)}'),
-              subtitle: Text(
+              title:
+                  AutoSizeText('${formatCurrency.format(widget.order.total)}'),
+              subtitle: AutoSizeText(
                 DateFormat('dd/MM/yyyy hh:mm').format(widget.order.date),
               ),
               trailing: IconButton(
@@ -45,19 +48,27 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
               duration: Duration(milliseconds: 500),
               height: _isExpanded ? itemsHeight : 0,
               padding: EdgeInsets.symmetric(horizontal: 15.0.w),
-              child: ListView(
-                children: widget.order.items.map((item) {
+              child: ListView.builder(
+                itemCount: widget.order.items.length + 1,
+                itemBuilder: (ctx, index) {
+                  if (index == widget.order.items.length) {
+                    return ShoppingValue(
+                      shoppingValue: widget.order.shippingValue,
+                    );
+                  }
+
+                  var item = widget.order.items[index];
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
+                      AutoSizeText(
                         item.product.name,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18.sp,
                         ),
                       ),
-                      Text(
+                      AutoSizeText(
                         '${item.quantity}x ${formatCurrency.format(item.product.price)}',
                         style: TextStyle(
                           fontSize: 18.sp,
@@ -66,7 +77,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                       ),
                     ],
                   );
-                }).toList(),
+                },
               ),
             )
           ],

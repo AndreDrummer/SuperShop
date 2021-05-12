@@ -16,10 +16,11 @@ class OrderBloc extends ChangeNotifier {
 
     currentOrders.add(
       Order(
-        date: order.date,
+        shippingValue: order.shippingValue,
         id: currentOrders.length + 1,
         items: order.items,
         total: order.total,
+        date: order.date,
       ),
     );
     changeOrders(currentOrders);
