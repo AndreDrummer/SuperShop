@@ -6,7 +6,7 @@ class SuperShopStrings {
   static final String noGameFound = 'Nenhum game foi encontrado!';
   static final String orderByScore = 'Ordenar por popularidade';
   static final String addToTheCart = 'Adicionar ao carrinho';
-  static final String productOnCart = 'Produto no carrinho';
+  static final String removeFromCart = 'Remover do carrinho';
   static final String nothingFound = 'Nada foi encontrado!';
   static final String onlyFavorites = 'Somente Favoritos';
   static final String orderByPrice = 'Ordenar por preço';
@@ -24,6 +24,7 @@ class SuperShopStrings {
   static final String undo = 'Desfazer';
   static final String buy = 'Comprar';
   static final String score = 'Score';
+  static final String free = 'Grátis';
   static final String shop = 'Loja';
   static final String yes = 'Sim';
   static final String no = 'Não';

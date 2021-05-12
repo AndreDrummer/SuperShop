@@ -37,6 +37,7 @@ class CartBloc extends ChangeNotifier {
     } else {
       currentCart.add(
         CartItem(
+          price: product.price,
           product: product,
           quantity: 1,
         ),
@@ -69,15 +70,36 @@ class CartBloc extends ChangeNotifier {
     );
     CartItem productOnCart = currentCart.elementAt(productIndex);
     currentCart[productIndex] = productOnCart.copyWith(
+      newPrice: (productOnCart.quantity + 1) * productOnCart.price,
       newQuantity: productOnCart.quantity + 1,
     );
     changeCart(currentCart);
     calculateCheckoutValue();
+    notifyListeners();
+  }
+
+  void decrementProductQty(int productId) {
+    List<CartItem> currentCart = cartList;
+    var productIndex = currentCart.indexOf(
+      currentCart.where((cartItem) => cartItem.product.id == productId).first,
+    );
+    CartItem productOnCart = currentCart.elementAt(productIndex);
+    if (productOnCart.quantity == 1) {
+      removeItem(productOnCart.product);
+    } else {
+      currentCart[productIndex] = productOnCart.copyWith(
+        newPrice: (productOnCart.quantity - 1) * productOnCart.price,
+        newQuantity: productOnCart.quantity - 1,
+      );
+    }
+    changeCart(currentCart);
+    calculateCheckoutValue();
+    notifyListeners();
   }
 
   void calculateCheckoutValue() {
     var productsValue = cartList
-        .map((e) => e.product.price)
+        .map((e) => e.product.price * e.quantity)
         .fold(0, (prev, element) => double.parse(prev!.toString()) + element)
         .toDouble();
     changeCartPrice(productsValue);

@@ -6,20 +6,24 @@ part 'cart_model.g.dart';
 @JsonSerializable()
 class CartItem {
   CartItem({
-    required this.product,
     required this.quantity,
+    required this.product,
+    required this.price,
   });
 
   final Product product;
+  final double price;
   final int quantity;
 
   CartItem copyWith({
     Product? newProduct,
     int? newQuantity,
+    double? newPrice,
   }) {
     return CartItem(
       quantity: newQuantity ?? quantity,
       product: newProduct ?? product,
+      price: newPrice ?? price,
     );
   }
 

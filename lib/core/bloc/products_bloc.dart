@@ -57,7 +57,7 @@ class ProductsBloc extends ChangeNotifier {
 
   void orderByScore() {
     List<Product> newList = productList;
-    newList.sort((Product a, Product b) => a.score - b.score);
+    newList.sort((Product a, Product b) => b.score - a.score);
     changeProduct(newList);
     notifyListeners();
   }

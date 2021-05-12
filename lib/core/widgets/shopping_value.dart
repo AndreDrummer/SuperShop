@@ -9,6 +9,7 @@ class ShoppingValue extends StatelessWidget {
     required this.shoppingValue,
   });
   final double shoppingValue;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -22,7 +23,9 @@ class ShoppingValue extends StatelessWidget {
           ),
         ),
         AutoSizeText(
-          '${formatCurrency.format(shoppingValue)}',
+          shoppingValue == 0.0
+              ? SuperShopStrings.free
+              : '${formatCurrency.format(shoppingValue)}',
           style: TextStyle(
             fontSize: 18.sp,
             color: Colors.black54,

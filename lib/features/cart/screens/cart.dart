@@ -78,6 +78,7 @@ class _CartScreenState extends State<CartScreen> with NotificationMixin {
                   ),
                 ),
                 Card(
+                  elevation: 8.0.h,
                   margin: EdgeInsets.all(25.0.h),
                   child: Padding(
                     padding: EdgeInsets.all(4.0.h),

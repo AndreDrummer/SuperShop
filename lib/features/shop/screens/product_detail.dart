@@ -21,17 +21,26 @@ class ProductDetailScreen extends StatelessWidget with NotificationMixin {
           height: 50.0.h,
           child: ElevatedButton(
             onPressed: () {
-              cart.addItem(product);
-              showNotification(
-                SuperShopStrings.itemAddedToTheCart,
-              );
+              if (!cart.elementUserExistsOnList(product)) {
+                cart.addItem(product);
+                showNotification(
+                  SuperShopStrings.itemAddedToTheCart,
+                );
+              } else {
+                cart.removeItem(product);
+                showNotification(
+                  SuperShopStrings.itemRemovedFromTheCart,
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
-              primary: Theme.of(context).accentColor,
+              primary: !cart.elementUserExistsOnList(product)
+                  ? Theme.of(context).accentColor
+                  : Colors.red,
             ),
             child: AutoSizeText(
               cart.elementUserExistsOnList(product)
-                  ? SuperShopStrings.productOnCart
+                  ? SuperShopStrings.removeFromCart
                   : SuperShopStrings.addToTheCart,
               style: TextStyles.fontSize26(),
             ),
@@ -110,7 +119,6 @@ class ProductDetailScreen extends StatelessWidget with NotificationMixin {
                     ],
                   ),
                 ),
-                SizedBox(height: 10000.0.h),
               ],
             ),
           )
