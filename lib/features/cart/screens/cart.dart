@@ -6,6 +6,7 @@ import 'package:supers/core/mixins/notification.dart';
 import 'package:supers/core/style/text_styles.dart';
 import 'package:supers/core/utils/app_routes.dart';
 import 'package:supers/core/widgets/bottom_navigation_bar.dart';
+import 'package:supers/core/widgets/empty_screen.dart';
 import 'package:supers/core/widgets/shopping_value.dart';
 import '../../../core/bloc/cart_bloc.dart';
 import '../../../core/bloc/order_bloc.dart';
@@ -27,88 +28,95 @@ class _CartScreenState extends State<CartScreen> with NotificationMixin {
         appBar: AppBar(
           title: AutoSizeText(SuperShopStrings.cart),
         ),
-        bottomNavigationBar: Consumer<OrderBloc>(
-          builder: (ctx, order, _) => GestureDetector(
-            onTap: cart.cartList.isEmpty
-                ? null
-                : () {
-                    var purchase = Order(
-                      shippingValue: cart.shippingValue,
-                      id: order.ordersValue.length + 1,
-                      total: cart.checkoutValue,
-                      date: DateTime.now(),
-                      items: cart.cartList,
-                    );
-
-                    Provider.of<OrderBloc>(context, listen: false)
-                        .purchase(purchase);
-                    cart.clearCart();
-                    showNotification(
-                      SuperShopStrings.purchaseSuccess,
-                      seconds: 3,
-                    );
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.ORDERS,
-                    );
-                  },
-            child: BottomBar(
-              centerTitle: true,
-              title: SuperShopStrings.buy.toUpperCase(),
-              bottomSize: 50,
-            ),
-          ),
-        ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: ListView.builder(
-                itemCount: cart.cartList.length,
-                itemBuilder: (ctx, i) => CartItemWidegt(
-                  cartItem: cart.cartList[i],
-                ),
-              ),
-            ),
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32.0.w),
-                  child: ShoppingValue(
-                    shoppingValue: cart.shippingValue,
-                  ),
-                ),
-                Card(
-                  elevation: 8.0.h,
-                  margin: EdgeInsets.all(25.0.h),
-                  child: Padding(
-                    padding: EdgeInsets.all(4.0.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        AutoSizeText(
-                          SuperShopStrings.cartTotalPrice,
-                          style: TextStyles.fontSize26(
-                            color: Colors.black87,
-                          ),
-                        ),
-                        Spacer(),
-                        Chip(
-                          backgroundColor: Theme.of(context).accentColor,
-                          label: AutoSizeText(
-                            '${formatCurrency.format(cart.checkoutValue)}',
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ],
+        bottomNavigationBar:
+            cart.cartList.isNotEmpty ? _bottomNavigationBar(cart) : null,
+        body: cart.cartList.isEmpty
+            ? EmptyScreen()
+            : Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: cart.cartList.length,
+                      itemBuilder: (ctx, i) => CartItemWidegt(
+                        cartItem: cart.cartList[i],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            )
-          ],
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 32.0.w),
+                        child: ShoppingValue(
+                          shoppingValue: cart.shippingValue,
+                        ),
+                      ),
+                      Card(
+                        elevation: 8.0.h,
+                        margin: EdgeInsets.all(25.0.h),
+                        child: Padding(
+                          padding: EdgeInsets.all(4.0.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              AutoSizeText(
+                                SuperShopStrings.cartTotalPrice,
+                                style: TextStyles.fontSize26(
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              Spacer(),
+                              Chip(
+                                backgroundColor: Theme.of(context).accentColor,
+                                label: AutoSizeText(
+                                  '${formatCurrency.format(cart.checkoutValue)}',
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+      ),
+    );
+  }
+
+  Widget _bottomNavigationBar(CartBloc cart) {
+    return Consumer<OrderBloc>(
+      builder: (ctx, order, _) => GestureDetector(
+        onTap: cart.cartList.isEmpty
+            ? null
+            : () {
+                var purchase = Order(
+                  shippingValue: cart.shippingValue,
+                  id: order.ordersValue.length + 1,
+                  total: cart.checkoutValue,
+                  date: DateTime.now(),
+                  items: cart.cartList,
+                );
+
+                Provider.of<OrderBloc>(context, listen: false)
+                    .purchase(purchase);
+                cart.clearCart();
+                showNotification(
+                  SuperShopStrings.purchaseSuccess,
+                  seconds: 3,
+                );
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.ORDERS,
+                );
+              },
+        child: BottomBar(
+          centerTitle: true,
+          title: SuperShopStrings.buy.toUpperCase(),
+          bottomSize: 50,
         ),
       ),
     );

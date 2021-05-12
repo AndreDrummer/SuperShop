@@ -32,6 +32,7 @@ class _SuperShopState extends State<SuperShop> {
             theme: ThemeData(
               primaryColor: CustomColors.hexPrimary,
               accentColor: CustomColors.hexAccent,
+              fontFamily: 'Lato',
             ),
             debugShowCheckedModeBanner: false,
             routes: {

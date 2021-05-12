@@ -13,11 +13,13 @@ enum OrderCriteria {
 }
 
 class ProductsBloc extends ChangeNotifier {
-  final products = BehaviorSubject<List<Product>>.seeded(<Product>[]);
+  final _productsController =
+      BehaviorSubject<List<Product>>.seeded(<Product>[]);
 
-  void Function(List<Product>) get changeProduct => products.sink.add;
-  Stream<List<Product>> get productsStream => products.stream;
-  List<Product> get productList => products.value;
+  void Function(List<Product>) get changeProduct =>
+      _productsController.sink.add;
+  Stream<List<Product>> get productsStream => _productsController.stream;
+  List<Product> get productList => _productsController.value;
 
   void loadProducts() {
     changeProduct(<Product>[]);
@@ -98,7 +100,7 @@ class ProductsBloc extends ChangeNotifier {
 
   @override
   void dispose() {
-    products.close();
+    _productsController.close();
     super.dispose();
   }
 }

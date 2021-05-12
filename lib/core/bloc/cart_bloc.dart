@@ -6,21 +6,23 @@ import '../models/cart_model.dart';
 import '../models/product_model.dart';
 
 class CartBloc extends ChangeNotifier {
-  final _itemsCart = BehaviorSubject<List<CartItem>>.seeded(<CartItem>[]);
-  final _shippingValue = BehaviorSubject<double>.seeded(0.0);
-  final _cartPrice = BehaviorSubject<double>.seeded(0.0);
+  final _shippingValueControler = BehaviorSubject<double>.seeded(0.0);
+  final _itemsCartControler =
+      BehaviorSubject<List<CartItem>>.seeded(<CartItem>[]);
+  final _cartPriceControler = BehaviorSubject<double>.seeded(0.0);
 
-  void Function(double) get changeShippingValue => _shippingValue.sink.add;
-  Stream<double> get shippingValueStream => _shippingValue.stream;
-  double get shippingValue => _shippingValue.value;
+  Stream<double> get shippingValueStream => _shippingValueControler.stream;
+  void Function(double) get changeShippingValue =>
+      _shippingValueControler.sink.add;
+  double get shippingValue => _shippingValueControler.value;
 
-  void Function(double) get changeCartPrice => _cartPrice.sink.add;
-  Stream<double> get cartPriceStream => _cartPrice.stream;
-  double get cartPrice => _cartPrice.value;
+  void Function(double) get changeCartPrice => _cartPriceControler.sink.add;
+  Stream<double> get cartPriceStream => _cartPriceControler.stream;
+  double get cartPrice => _cartPriceControler.value;
 
-  void Function(List<CartItem>) get changeCart => _itemsCart.sink.add;
-  Stream<List<CartItem>> get cartStream => _itemsCart.stream;
-  List<CartItem> get cartList => _itemsCart.value;
+  void Function(List<CartItem>) get changeCart => _itemsCartControler.sink.add;
+  Stream<List<CartItem>> get cartStream => _itemsCartControler.stream;
+  List<CartItem> get cartList => _itemsCartControler.value;
 
   double get checkoutValue => cartPrice + shippingValue;
 
@@ -117,9 +119,9 @@ class CartBloc extends ChangeNotifier {
 
   @override
   void dispose() {
-    _shippingValue.close();
-    _itemsCart.close();
-    _cartPrice.close();
+    _shippingValueControler.close();
+    _itemsCartControler.close();
+    _cartPriceControler.close();
     super.dispose();
   }
 }

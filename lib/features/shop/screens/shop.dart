@@ -1,7 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:supers/core/svg_path.dart';
 
 import '../../../core/bloc/cart_bloc.dart';
 import '../../../core/bloc/products_bloc.dart';
@@ -58,18 +60,34 @@ class _ShopScreenState extends State<ShopScreen> {
               },
             ),
             Consumer<CartBloc>(
-              child: IconButton(
-                icon: Icon(Icons.shopping_cart),
-                onPressed: () {
+              child: Padding(
+                padding: EdgeInsets.all(12.0.w),
+                child: InkWell(
+                  child: SvgPicture.asset(
+                    SVGPath.cartIcon,
+                    color: Colors.white,
+                    height: 25,
+                    semanticsLabel: 'A red up arrow',
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.CART,
+                    );
+                  },
+                ),
+              ),
+              builder: (_, cart, child) => InkWell(
+                onTap: () {
                   Navigator.pushNamed(
                     context,
                     AppRoutes.CART,
                   );
                 },
-              ),
-              builder: (_, cart, child) => Badge(
-                value: '${cart.cartList.length}',
-                child: child!,
+                child: Badge(
+                  value: '${cart.cartList.length}',
+                  child: child!,
+                ),
               ),
             )
           ],
