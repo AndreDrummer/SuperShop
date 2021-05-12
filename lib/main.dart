@@ -1,6 +1,9 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
+import 'package:supers/features/cart/screens/cart.dart';
+import 'package:supers/features/orders/screens/orders.dart';
 
 import 'core/providers.dart';
 import 'core/utils/app_routes.dart';
@@ -22,15 +25,19 @@ class _SuperShopState extends State<SuperShop> {
       providers: providers,
       child: ScreenUtilInit(
         designSize: Size(360, 690),
-        builder: () => MaterialApp(
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            accentColor: Colors.orange,
+        builder: () => OverlaySupport(
+          child: MaterialApp(
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              accentColor: Colors.orange,
+            ),
+            debugShowCheckedModeBanner: false,
+            routes: {
+              AppRoutes.ORDERS: (ctx) => OrdersScreen(),
+              AppRoutes.SHOP: (ctx) => ShopScreen(),
+              AppRoutes.CART: (ctx) => CartScreen(),
+            },
           ),
-          debugShowCheckedModeBanner: false,
-          routes: {
-            AppRoutes.SHOP: (ctx) => ShopScreen(),
-          },
         ),
       ),
     );

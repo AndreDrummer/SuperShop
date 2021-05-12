@@ -43,17 +43,11 @@ class AppDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(
                   context,
-                  AppRoutes.PRODUCTS,
+                  AppRoutes.CART,
                 );
               },
             ),
             Divider(),
-            ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: AutoSizeText(SuperShopStrings.leaveApp),
-              onTap: () {},
-            ),
-            Divider()
           ],
         ),
       ),

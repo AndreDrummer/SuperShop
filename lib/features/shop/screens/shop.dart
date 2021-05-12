@@ -88,13 +88,30 @@ class _ShopScreenState extends State<ShopScreen> {
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    padding: EdgeInsets.all(8.0.h),
-                    color: Colors.red,
-                    height: 50,
+                    padding: EdgeInsets.all(16.0.h),
+                    color: Theme.of(context).accentColor,
+                    height: 60,
                     width: Sizes.deviceWidth(context),
-                    child: AutoSizeText(
-                      'Checkout: ${formatCurrency.format(cart.checkoutValue)}',
-                      style: TextStyles.fontSize26(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AutoSizeText(
+                          '${SuperShopStrings.cartTotalPrice} ${formatCurrency.format(cart.cartPrice)}',
+                          style: TextStyles.fontSize26(),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.CART,
+                            );
+                          },
+                          child: AutoSizeText(
+                            '${SuperShopStrings.seeCart}',
+                            style: TextStyles.fontSize18(),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 )

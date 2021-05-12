@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supers/core/mixins/notification.dart';
 import 'package:supers/core/utils/currency_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:supers/core/bloc/cart_bloc.dart';
@@ -11,7 +12,7 @@ import '../../../core/models/product_model.dart';
 import '../../../core/style/text_styles.dart';
 import '../../../core/utils/app_routes.dart';
 
-class ProductGridItem extends StatelessWidget {
+class ProductGridItem extends StatelessWidget with NotificationMixin {
   ProductGridItem({
     required this.product,
   });
@@ -81,18 +82,17 @@ class ProductGridItem extends StatelessWidget {
                         icon: _wichShoppingCartIcon(context, product),
                         color: Theme.of(context).accentColor,
                         onPressed: () {
-                          cart.addItem(product);
-                          showSnackBar(
-                            context,
-                            SuperShopStrings.itemAddedToTheCart,
-                            undo: () {
-                              cart.removeItem(product);
-                              showSnackBar(
-                                context,
-                                SuperShopStrings.itemRemovedFromTheCart,
-                              );
-                            },
-                          );
+                          if (cart.elementUserExistsOnList(product)) {
+                            cart.removeItem(product);
+                            showNotification(
+                              SuperShopStrings.itemRemovedFromTheCart,
+                            );
+                          } else {
+                            cart.addItem(product);
+                            showNotification(
+                              SuperShopStrings.itemAddedToTheCart,
+                            );
+                          }
                         },
                       );
                     },
@@ -110,23 +110,5 @@ class ProductGridItem extends StatelessWidget {
     if (Provider.of<CartBloc>(context).elementUserExistsOnList(product))
       return Icon(Icons.shopping_cart);
     return Icon(Icons.shopping_cart_outlined);
-  }
-
-  void showSnackBar(BuildContext context, String message, {Function? undo}) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: Duration(seconds: 2),
-        content: AutoSizeText(message),
-        action: undo != null
-            ? SnackBarAction(
-                label: SuperShopStrings.undo,
-                onPressed: () {
-                  undo.call();
-                },
-              )
-            : null,
-      ),
-    );
   }
 }

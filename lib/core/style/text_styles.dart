@@ -11,6 +11,10 @@ class TextStyles {
   }
 
   static TextStyle fontSize26({Color color = Colors.white}) {
-    return TextStyle(color: color, fontSize: 26.sp);
+    return TextStyle(
+      color: color,
+      fontSize: 26.sp,
+      fontWeight: FontWeight.bold,
+    );
   }
 }
