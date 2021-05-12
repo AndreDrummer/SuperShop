@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:supers/features/cart/screens/cart.dart';
 import 'package:supers/features/orders/screens/orders.dart';
 
+import 'core/constantes/custom_colors.dart';
 import 'core/providers.dart';
 import 'core/utils/app_routes.dart';
+import 'features/shop/screens/product_detail.dart';
 import 'features/shop/screens/shop.dart';
 
 void main() {
@@ -28,11 +30,12 @@ class _SuperShopState extends State<SuperShop> {
         builder: () => OverlaySupport(
           child: MaterialApp(
             theme: ThemeData(
-              primaryColor: Color(0xFF1E212B),
-              accentColor: Color(0XFF4D8B31),
+              primaryColor: CustomColors.hexPrimary,
+              accentColor: CustomColors.hexAccent,
             ),
             debugShowCheckedModeBanner: false,
             routes: {
+              AppRoutes.PRODUCTS_DETAIL: (ctx) => ProductDetailScreen(),
               AppRoutes.ORDERS: (ctx) => OrdersScreen(),
               AppRoutes.SHOP: (ctx) => ShopScreen(),
               AppRoutes.CART: (ctx) => CartScreen(),
