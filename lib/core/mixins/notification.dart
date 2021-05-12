@@ -4,10 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supers/core/utils/overlat_notification.dart';
 
 mixin NotificationMixin {
-  void showNotification(
-    String message, {
-    String errorTitle = 'Sucesso!',
-  }) {
+  void showNotification(String message,
+      {String errorTitle = 'Sucesso!', int? seconds}) {
     WidgetsBinding.instance!.addPostFrameCallback(
       (_) {
         showOverlayNotification(
@@ -22,7 +20,7 @@ mixin NotificationMixin {
             );
           },
           position: NotificationPosition.top,
-          duration: Duration(seconds: 1),
+          duration: Duration(seconds: seconds ?? 1),
         );
       },
     );

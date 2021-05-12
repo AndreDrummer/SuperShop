@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supers/core/mixins/notification.dart';
+import 'package:supers/core/style/text_styles.dart';
+import 'package:supers/core/utils/app_routes.dart';
+import 'package:supers/core/widgets/bottom_navigation_bar.dart';
 import '../../../core/bloc/cart_bloc.dart';
 import '../../../core/bloc/order_bloc.dart';
 import '../../../core/constantes/strings.dart';
@@ -13,16 +17,49 @@ class CartScreen extends StatefulWidget {
   _CartScreenState createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreenState extends State<CartScreen> with NotificationMixin {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SuperShopStrings.cart),
-      ),
-      body: Consumer<CartBloc>(
-        builder: (ctx, cart, _) => Column(
+    return Consumer<CartBloc>(
+      builder: (ctx, cart, _) => Scaffold(
+        appBar: AppBar(
+          title: Text(SuperShopStrings.cart),
+        ),
+        bottomNavigationBar: Consumer<OrderBloc>(
+          builder: (ctx, order, _) => GestureDetector(
+            onTap: () {
+              cart.clearCart();
+              showNotification(SuperShopStrings.purchaseSuccess, seconds: 3);
+              Provider.of<OrderBloc>(context, listen: false).purchase(
+                Order(
+                  date: DateTime.now(),
+                  id: order.ordersValue.length + 1,
+                  items: cart.cartList,
+                  total: cart.checkoutValue,
+                ),
+              );
+              Navigator.pushNamed(
+                context,
+                AppRoutes.ORDERS,
+              );
+            },
+            child: BottomBar(
+              centerTitle: true,
+              title: SuperShopStrings.buy.toUpperCase(),
+              bottomSize: 50,
+            ),
+          ),
+        ),
+        body: Column(
           children: <Widget>[
+            Expanded(
+              child: ListView.builder(
+                itemCount: cart.cartList.length,
+                itemBuilder: (ctx, i) => CartItemWidegt(
+                  cartItem: cart.cartList[i],
+                ),
+              ),
+            ),
             Card(
               margin: const EdgeInsets.all(25),
               child: Padding(
@@ -32,40 +69,22 @@ class _CartScreenState extends State<CartScreen> {
                   children: <Widget>[
                     Text(
                       SuperShopStrings.cartTotalPrice,
-                      style: TextStyle(
-                        fontSize: 20,
+                      style: TextStyles.fontSize26(
+                        color: Colors.black87,
                       ),
                     ),
-                    SizedBox(width: 10),
+                    Spacer(),
                     Chip(
                       backgroundColor: Theme.of(context).accentColor,
                       label: Text(
                         '${formatCurrency.format(cart.checkoutValue)}',
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ),
-                    Spacer(),
-                    Consumer<OrderBloc>(
-                      builder: (ctx, order, _) => OrderButton(
-                        order: Order(
-                          date: DateTime.now(),
-                          id: order.ordersValue.length + 1,
-                          items: cart.cartList,
-                          total: cart.checkoutValue,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
                   ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: cart.cartList.length,
-                itemBuilder: (ctx, i) => CartItemWidegt(
-                  cartItem: cart.cartList[i],
                 ),
               ),
             )
@@ -73,58 +92,5 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
     );
-  }
-}
-
-class OrderButton extends StatefulWidget {
-  const OrderButton({
-    Key? key,
-    required this.order,
-  }) : super(key: key);
-
-  final Order order;
-
-  @override
-  _OrderButtonState createState() => _OrderButtonState();
-}
-
-class _OrderButtonState extends State<OrderButton> {
-  bool _isLoading = false;
-  late CartBloc cartBloc;
-
-  @override
-  void initState() {
-    cartBloc = Provider.of<CartBloc>(context, listen: false);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _isLoading
-        ? CircularProgressIndicator()
-        : cartBloc.cartList.isEmpty
-            ? Container()
-            : TextButton(
-                child: Text(
-                  SuperShopStrings.buy,
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                onPressed: widget.order.total == 0
-                    ? null
-                    : () {
-                        setState(() {
-                          _isLoading = true;
-                        });
-
-                        Provider.of<OrderBloc>(context, listen: false)
-                            .purchase(widget.order);
-
-                        setState(() {
-                          _isLoading = false;
-                        });
-                      },
-              );
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
-import '../data/dummy_data.dart';
 import '../models/order_model.dart';
 
 class OrderBloc extends ChangeNotifier {
@@ -11,19 +10,6 @@ class OrderBloc extends ChangeNotifier {
   void Function(List<Order>) get changeOrders => _ordersController.sink.add;
   Stream<List<Order>> get ordersStream => _ordersController.stream;
   List<Order> get ordersValue => _ordersController.value;
-
-  void loadOrders() {
-    changeOrders(<Order>[]);
-    final List<Order> orders = orderList
-        .map(
-          (order) => Order.fromJson(
-            order,
-          ),
-        )
-        .toList();
-
-    changeOrders(orders);
-  }
 
   void purchase(Order order) {
     List<Order> currentOrders = ordersValue;

@@ -1,6 +1,7 @@
 class SuperShopStrings {
   static final String itemRemovedFromTheCart = 'Item removido do carrinho!';
   static final String itemAddedToTheCart = 'Item adicionado ao carrinho!';
+  static final String purchaseSuccess = 'Compra realziada com sucesso!';
   static final String wannaRemoveItem = 'Deseja remover este item?';
   static final String noGameFound = 'Nenhum game foi encontrado!';
   static final String orderByScore = 'Ordenar por popularidade';
@@ -10,6 +11,7 @@ class SuperShopStrings {
   static final String orderByName = 'Ordenar por nome';
   static final String appTitle = 'Super Game Shop';
   static final String myOrders = 'Meus Pedidos';
+  static final String seeDetails = 'Ver detalhes';
   static final String cartTotalPrice = 'Total';
   static final String seeCart = 'Ver Carrinho';
   static final String welcome = 'Bem vindo ';

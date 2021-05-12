@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:supers/core/models/product_model.dart';
 
-import '../data/dummy_data.dart';
 import '../models/cart_model.dart';
+import '../models/product_model.dart';
 
 class CartBloc extends ChangeNotifier {
   final _itemsCart = BehaviorSubject<List<CartItem>>.seeded(<CartItem>[]);
@@ -25,17 +24,10 @@ class CartBloc extends ChangeNotifier {
 
   double get checkoutValue => cartPrice + shippingValue;
 
-  void loadCart() {
+  void clearCart() {
     changeCart(<CartItem>[]);
-    final List<CartItem> carts = cart
-        .map(
-          (cart) => CartItem.fromJson(
-            cart,
-          ),
-        )
-        .toList();
-
-    changeCart(carts);
+    calculateCheckoutValue();
+    notifyListeners();
   }
 
   void addItem(Product product) {

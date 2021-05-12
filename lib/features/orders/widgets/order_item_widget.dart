@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import "package:intl/intl.dart";
+import 'package:intl/intl.dart';
 import 'package:supers/core/models/order_model.dart';
+import 'package:supers/core/utils/currency_formatter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OrderItemWidget extends StatefulWidget {
   final Order order;
@@ -24,12 +26,14 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text("R\$ ${widget.order.total}"),
+              title: Text('${formatCurrency.format(widget.order.total)}'),
               subtitle: Text(
-                  DateFormat("dd/MM/yyyy hh:mm").format(widget.order.date)),
+                DateFormat('dd/MM/yyyy hh:mm').format(widget.order.date),
+              ),
               trailing: IconButton(
                 icon: Icon(
-                    _isExpanded ? Icons.keyboard_arrow_up : Icons.expand_more),
+                  _isExpanded ? Icons.keyboard_arrow_up : Icons.expand_more,
+                ),
                 onPressed: () {
                   setState(() {
                     _isExpanded = !_isExpanded;
@@ -40,7 +44,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
             AnimatedContainer(
               duration: Duration(milliseconds: 500),
               height: _isExpanded ? itemsHeight : 0,
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(horizontal: 15.0.w),
               child: ListView(
                 children: widget.order.items.map((item) {
                   return Row(
@@ -50,12 +54,15 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                         item.product.name,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          fontSize: 18.sp,
                         ),
                       ),
                       Text(
-                        "${item.quantity}x ${item.product.price}",
-                        style: TextStyle(fontSize: 18, color: Colors.black54),
+                        '${item.quantity}x ${formatCurrency.format(item.product.price)}',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          color: Colors.black54,
+                        ),
                       ),
                     ],
                   );

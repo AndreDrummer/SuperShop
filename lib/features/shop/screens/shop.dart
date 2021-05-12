@@ -1,15 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:supers/core/constantes/sizes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:supers/core/style/text_styles.dart';
-import 'package:supers/core/utils/currency_formatter.dart';
+import 'package:provider/provider.dart';
+
 import '../../../core/bloc/cart_bloc.dart';
 import '../../../core/bloc/products_bloc.dart';
 import '../../../core/constantes/strings.dart';
 import '../../../core/utils/app_routes.dart';
+import '../../../core/utils/currency_formatter.dart';
 import '../../../core/widgets/badge.dart';
+import '../../../core/widgets/bottom_navigation_bar.dart';
 import '../../../core/widgets/drawer.dart';
 import '../widgets/product_grid.dart';
 
@@ -87,32 +87,16 @@ class _ShopScreenState extends State<ShopScreen> {
               if (cart.cartList.isNotEmpty)
                 Positioned(
                   bottom: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(16.0.h),
-                    color: Theme.of(context).accentColor,
-                    height: 60,
-                    width: Sizes.deviceWidth(context),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AutoSizeText(
-                          '${SuperShopStrings.cartTotalPrice} ${formatCurrency.format(cart.cartPrice)}',
-                          style: TextStyles.fontSize26(),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutes.CART,
-                            );
-                          },
-                          child: AutoSizeText(
-                            '${SuperShopStrings.seeCart}',
-                            style: TextStyles.fontSize18(),
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: BottomBar(
+                    title:
+                        '${SuperShopStrings.cartTotalPrice} ${formatCurrency.format(cart.cartPrice)}',
+                    action: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.CART,
+                      );
+                    },
+                    actionText: '${SuperShopStrings.seeCart}',
                   ),
                 )
             ],

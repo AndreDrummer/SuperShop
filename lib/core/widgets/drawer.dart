@@ -11,7 +11,7 @@ class AppDrawer extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: AutoSizeText('${SuperShopStrings.welcome} usuário!'),
+          title: AutoSizeText('${SuperShopStrings.welcome}'),
         ),
         body: Column(
           children: <Widget>[
